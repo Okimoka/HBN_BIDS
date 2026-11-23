@@ -1,0 +1,2 @@
+-r ../hbn_repair/requirements.txt
+-r ../smi2bids/requirements.txt

@@ -1,0 +1,4 @@
+pandas
+scipy
+boto3
+bids-validator-deno==3.0.1

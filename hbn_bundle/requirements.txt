@@ -1,0 +1,2 @@
+pandas
+bids-validator-deno==3.0.1

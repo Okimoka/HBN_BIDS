@@ -1,0 +1,44 @@
+# copy this file and fill in known values
+# non-null values override inferred metadata; null keeps an inferred value or leaves the field unset
+# do not add StartTime, SamplingFrequency or Columns here; the converter supplies them
+# fixed defaults are filled in; values inferred separately for each recording remain null
+
+Manufacturer: SensoMotoric Instruments
+ManufacturersModelName: null
+DeviceSerialNumber: null
+SoftwareVersions: null
+SampleCoordinateSystem: gaze-on-screen
+EyeTrackingMethod: null       # inferred as P-CR when corneal-reflection columns are present
+EyeTrackerDistance: null      # metres; eye-to-camera distance, distinct from ScreenDistance
+PupilFitMethod: null
+RawDataFilters: null
+
+# calibration fields are optional; available type and positions come from the Samples header
+CalibrationType: null
+CalibrationPosition: null
+CalibrationUnit: null         # inferred as pixel when calibration positions are present
+CalibrationCount: null        # number of calibration sessions; not inferred from the number of target points
+AverageCalibrationError: null # degrees of visual angle
+MaximalCalibrationError: null # degrees of visual angle
+
+# shared task metadata goes into <bids-prefix>_events.json
+TaskName: null                # existing events JSON TaskName, otherwise the filename's task entity
+InstitutionName: null
+InstitutionAddress: null
+VisionCorrection: null       # e.g. spectacles, lenses, or none; do not assume none
+
+# provide the required fields below if absent from the Samples header and existing events JSON
+StimulusPresentation:
+  # inferred from Head Distance [mm], converted to metres
+  ScreenDistance: null        # required; metres, e.g. 0.635
+  ScreenOrigin: [top, left]   # override this if the acquisition used another convention.
+  # Calibration Area is assumed to cover the full screen; override if calibration used a smaller area
+  ScreenResolution: null      # required; [width, height] in pixels, e.g. [1920, 1080]
+  # inferred from Stimulus Dimension [mm], converted to metres
+  ScreenSize: null            # required; [width, height] in metres, e.g. [0.53, 0.30]
+  ScreenRefreshRate: null     # optional, in Hz, e.g. 60
+  OperatingSystem: null
+  SoftwareName: null
+  SoftwareRRID: null
+  SoftwareVersion: null
+  Code: null                 # URI of the stimulus-presentation code

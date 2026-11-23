@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net">
+  <diagram id="hbn-architecture" name="HBN_BIDS architecture">
+    <mxGraphModel dx="1271" dy="625" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="nemar" parent="1" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#ffffff;strokeColor=#666666;fontSize=14;" value="Published HBN-EEG / NEMAR&#xa;EEG in BIDS" vertex="1">
+          <mxGeometry height="70" width="230" x="100" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="s3" parent="1" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#ffffff;strokeColor=#666666;fontSize=14;" value="Original HBN / S3&#xa;ET and BEH" vertex="1">
+          <mxGeometry height="70" width="230" x="620" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="download" parent="1" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#666666;fontSize=14;" value="download_dataset" vertex="1">
+          <mxGeometry height="60" width="230" x="360" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="repair" parent="1" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#666666;fontSize=14;" value="hbn_repair&#xa;Existing-release cleanup (A)" vertex="1">
+          <mxGeometry height="70" width="230" x="360" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="augment" parent="1" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#666666;fontSize=14;" value="hbn_augment&#xa;add ET (C) and behavioral data (B) " vertex="1">
+          <mxGeometry height="80" width="230" x="360" y="562" as="geometry" />
+        </mxCell>
+        <mxCell id="smi" parent="1" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#666666;fontSize=14;" value="smi2bids&#xa;Reusable SMI → BIDS converter" vertex="1">
+          <mxGeometry height="80" width="230" x="60" y="562" as="geometry" />
+        </mxCell>
+        <mxCell id="bundle" parent="1" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#666666;fontSize=14;" value="hbn_bundle&#xa;Optional combined analysis view" vertex="1">
+          <mxGeometry height="70" width="230" x="730" y="682" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-0" edge="1" parent="1" source="nemar" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" target="download" value="EEG">
+          <mxGeometry relative="1" x="-0.3333" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-1" edge="1" parent="1" source="s3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" target="download" value="ET + BEH">
+          <mxGeometry relative="1" x="-0.25" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-2" edge="1" parent="1" source="download" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" value="download">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-3" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" target="repair" value="human review">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="290" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-4" edge="1" parent="1" source="repair" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" value="retain signals; repair metadata/labels">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="451.9999999999999" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-5" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" target="augment" value="human review">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="522" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-6" edge="1" parent="1" source="augment" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" target="smi" value="calls">
+          <mxGeometry relative="1" y="-10" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="320" y="602" />
+              <mxPoint x="320" y="602" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-7" edge="1" parent="1" source="augment" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" value="add aligned ET">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="682" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-8" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" target="bundle" value="optional; after review">
+          <mxGeometry relative="1" y="15" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="590" y="717" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-9" edge="1" parent="1" source="bundle" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" value="symlink recordings; combine tables">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="845" y="802" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QSQbLO9hyK5LUtD0tJtD-2" parent="1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" value="&lt;font face=&quot;Courier New&quot;&gt;DATASET_REPAIRED&lt;/font&gt;" vertex="1">
+          <mxGeometry height="70" width="230" x="360" y="452" as="geometry" />
+        </mxCell>
+        <mxCell id="QSQbLO9hyK5LUtD0tJtD-3" parent="1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" value="&lt;font face=&quot;Courier New&quot;&gt;HBN_MERGED&lt;/font&gt;" vertex="1">
+          <mxGeometry height="68" width="230" x="730" y="802" as="geometry" />
+        </mxCell>
+        <mxCell id="QSQbLO9hyK5LUtD0tJtD-12" parent="1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" value="&lt;font face=&quot;Courier New&quot;&gt;HBN_RAW&lt;/font&gt;" vertex="1">
+          <mxGeometry height="70" width="220" x="370" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="QSQbLO9hyK5LUtD0tJtD-14" parent="1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" value="&lt;font face=&quot;Courier New&quot;&gt;HBN_AUGMENTED&lt;/font&gt;" vertex="1">
+          <mxGeometry height="78" width="230" x="360" y="682" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

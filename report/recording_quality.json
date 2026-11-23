@@ -1,0 +1,580 @@
+{
+  "RowDefinition": "Union of published EEG files and confirmed original S3 signal exports for participants in the selected releases. Task aliases are combined only when unambiguous; differing duplicate exports remain candidate rows.",
+  "MissingValues": {
+    "n/a": "Unknown or not assessed; recommendations are assigned separately from missing metric values"
+  },
+  "Scope": "Recommendation concerns EEG use for the named task after ordinary preprocessing. ET association and inclusion are reported separately; neither certifies ET synchronization or signal quality",
+  "hed_feedback_annotated": {
+    "Description": "Number of contrast targets with one consistent response and a recorded target-end marker; visual-feedback HED is attached to that end marker. No new event onset or outcome is invented"
+  },
+  "hed_feedback_unresolved": {
+    "Description": "Number of inspected contrast targets lacking an unambiguous feedback association; original response/outcome cells remain unchanged"
+  },
+  "hed_feedback_reasons": {
+    "Description": "Semicolon-separated controlled reasons for unresolved feedback annotations",
+    "Levels": {
+      "none": "No unresolved feedback association among inspected targets",
+      "missing_end": "Target has no end marker before another target, boundary, task start or file end",
+      "missing_response": "No response before the target-end marker",
+      "multiple_responses": "More than one response before the target-end marker",
+      "unknown_task_context": "A target label occurs without an established contrast-task segment",
+      "inconsistent_outcome_or_time": "Response outcome disagrees with target/response side, lacks a supported description, or the target/end timing is not increasing"
+    }
+  },
+  "hed_contrast_unusual_timing": {
+    "Description": "Number of target/end intervals outside 2.4 seconds ± 50 ms. The recording keeps point descriptions of target identity instead of fixed 1.6/0.8-second HED phases. Feedback on these trials is a point annotation without an asserted 400 ms duration"
+  },
+  "recording_id": {
+    "Description": "Stable row identifier; not necessarily a BIDS filename"
+  },
+  "participant_id": {
+    "Description": "Join key into participants.tsv"
+  },
+  "source_release": {
+    "Description": "Identifier of the original published EEG release, where known"
+  },
+  "release_number": {
+    "Description": "HBN release number"
+  },
+  "task": {
+    "Description": "Intended task whose usability is assessed in this row"
+  },
+  "run": {
+    "Description": "Known block/run number; n/a if absent or unresolved"
+  },
+  "upstream_status": {
+    "Description": "Original available/caution/unavailable entry, retained verbatim from participants.tsv when its recording identity is supported. Ambiguous unmatched source candidates use n/a. It is not translated into our recommendation",
+    "Levels": {
+      "available": "Original available status",
+      "caution": "Original caution status",
+      "unavailable": "Original unavailable status"
+    }
+  },
+  "in_s3": {
+    "Description": "A standalone original EEG export for this recording has been confirmed on S3. n/a if matching is ambiguous, or no match exists but the participant has unidentified source exports",
+    "Levels": {
+      "0": "Checked and absent",
+      "1": "Confirmed present"
+    }
+  },
+  "in_upstream_bids": {
+    "Description": "A standalone EEG file exists in the original published BIDS release",
+    "Levels": {
+      "0": "Checked and absent",
+      "1": "Confirmed present"
+    }
+  },
+  "in_bids": {
+    "Description": "A standalone EEG file exists in the delivered release described by this table",
+    "Levels": {
+      "0": "Checked and absent",
+      "1": "Confirmed present"
+    }
+  },
+  "et_associated": {
+    "Description": "A complete SMI samples/events pair is associated by supported task matching. 0 means no pair matched in the supplied ET tree; it does not establish absence of other original ET formats or certify synchronization",
+    "Levels": {
+      "0": "Checked and absent",
+      "1": "Confirmed present"
+    }
+  },
+  "et_in_bids": {
+    "Description": "Associated ET data are present in standard BIDS form in the delivered release; this is not a signal-quality verdict",
+    "Levels": {
+      "0": "Checked and absent",
+      "1": "Confirmed present"
+    }
+  },
+  "embedded_in": {
+    "Description": "recording_id of another row whose EEG file contains this task segment; n/a when no such relationship is established"
+  },
+  "bids_path": {
+    "Description": "Relative path from the delivered release root to the standalone EEG file; n/a if none"
+  },
+  "required_action": {
+    "Description": "Controlled action code; descriptions are defined once here instead of repeated as row prose",
+    "Levels": {
+      "none": "No special recovery or repair beyond ordinary task selection and preprocessing",
+      "extract_task": "Extract the verified task segment, preserve its time mapping and create the correctly named recording",
+      "convert_source": "Convert a verified usable original source into the delivered BIDS collection",
+      "exclude": "Do not use this recording for the assessed EEG task",
+      "review": "Review the unresolved evidence before relying on this recording"
+    }
+  },
+  "review_status": {
+    "Levels": {
+      "unreviewed": "No completed review for the stated analysis scope",
+      "partial": "Only some required checks have been completed",
+      "reviewed": "The specified human review is complete"
+    },
+    "Description": "Extent of human review; assigning an automatic recommendation does not change this field"
+  },
+  "recommendation": {
+    "Description": "EEG screening recommendation for the named task in the delivered release after ordinary preprocessing. Separate from the original upstream_status; see recommendation_method and recommendation_reasons",
+    "Levels": {
+      "available": "A delivered EEG recording has no relevant obstacle detected by the available checks; not a signal-quality certification",
+      "caution": "A delivered EEG recording has a known caveat or incomplete assessment requiring consideration before use",
+      "unavailable": "No standalone EEG recording is delivered for this row, or this specific recording is confirmed unusable. Reasons distinguish these cases; missing data are not declared irrecoverable"
+    }
+  },
+  "ReviewProtocol": "Automatic EEG screening assigns provisional recommendations using RecommendationRules; --reviews overrides them. Human review_status is preserved. ET availability, timing and missingness must be evaluated separately for joint EEG/ET analyses.",
+  "source_task": {
+    "Description": "Original S3 export name; n/a when unmatched"
+  },
+  "source_mapping": {
+    "Description": "task_alias: mapped by known task aliases or movie markers; unresolved: no supported task identity; ambiguous: multiple differing source/BIDS candidates"
+  },
+  "source_mat": {
+    "Description": "Original S3 MATLAB export URL, if present"
+  },
+  "source_csv": {
+    "Description": "Original S3 signal CSV URL, if present"
+  },
+  "mixed_task_starts": {
+    "Description": "1: more than one distinct recognized task/block start marker; 0: checked and absent"
+  },
+  "internal_boundary": {
+    "Description": "1: boundary or break cnt strictly within the sample interval; descriptive only, not a quality issue or evidence of task overlap"
+  },
+  "movie_anchor_count": {
+    "Description": "1: expected movie start or stop does not occur exactly once"
+  },
+  "unknown_channel_identity": {
+    "Description": "1: missing .set channel labels or the unresolved six-channel HBN layout"
+  },
+  "acquisition_fields_missing": {
+    "Description": "Semicolon-separated missing acquisition field names; n/a if none of the screened fields is missing"
+  },
+  "eeg_channel_count_added": {
+    "Description": "1: EEGChannelCount was filled from verified channel types and .set count"
+  },
+  "issue_availability": {
+    "Description": "present: available status without a BIDS file, or unavailable status despite a BIDS file; absent: neither condition"
+  },
+  "upstream_data_pnts": {
+    "Description": "Original quality-table sample count, without recalculation"
+  },
+  "upstream_event_cnt": {
+    "Description": "Original quality-table event count, without recalculation"
+  },
+  "upstream_key_events_exist": {
+    "Description": "Original quality-table key_events_exist value"
+  },
+  "upstream_quality_checks": {
+    "Description": "Original quality-table quality_checks value, without reinterpretation"
+  },
+  "source_aliases": {
+    "Description": "Semicolon-separated original export names collapsed when task identity, source signal size and S3 ETag agree"
+  },
+  "task_start_codes": {
+    "Description": "Semicolon-separated distinct task/block start codes; presence does not certify complete recoverable task segments"
+  },
+  "initial_offset_unpaired": {
+    "Description": "1: the first event is an offset without a preceding onset in this recording. Its label and timing are retained; hed_annotation represents it as a point event instead of an unsupported temporal interval"
+  },
+  "validation_state": {
+    "Description": "Per-recording validator outcome when --validate is used: pass, warning, error, not_applicable, or n/a if not run. A pass is not an EEG quality grade"
+  },
+  "validator_errors": {
+    "Description": "Semicolon-separated CODE:SUBCODE tokens; none if checked and no recording-level errors; n/a if not checked"
+  },
+  "validator_warnings": {
+    "Description": "Semicolon-separated CODE:SUBCODE tokens; none if checked and no recording-level warnings; n/a if not checked"
+  },
+  "issue_a01_event_labels": {
+    "Description": "A01: event labels",
+    "Levels": {
+      "absent": "Checked; issue not found",
+      "present": "Review flag or unresolved issue remains; not a recording rejection",
+      "fixed": "Issue was present and repaired",
+      "not_applicable": "Check does not apply"
+    }
+  },
+  "issue_a02_contrast_dictionary": {
+    "Description": "A02: contrast dictionary",
+    "Levels": {
+      "absent": "Checked; issue not found",
+      "present": "Review flag or unresolved issue remains; not a recording rejection",
+      "fixed": "Issue was present and repaired",
+      "not_applicable": "Check does not apply"
+    }
+  },
+  "issue_a03_event_definitions": {
+    "Description": "A03: event definitions",
+    "Levels": {
+      "absent": "Checked; issue not found",
+      "present": "Review flag or unresolved issue remains; not a recording rejection",
+      "fixed": "Issue was present and repaired",
+      "not_applicable": "Check does not apply"
+    }
+  },
+  "issue_a04_time_units": {
+    "Description": "A04: time units",
+    "Levels": {
+      "absent": "Checked; issue not found",
+      "present": "Review flag or unresolved issue remains; not a recording rejection",
+      "fixed": "Issue was present and repaired",
+      "not_applicable": "Check does not apply"
+    }
+  },
+  "issue_a05_source_datasets_key": {
+    "Description": "A05: source datasets key",
+    "Levels": {
+      "absent": "Checked; issue not found",
+      "present": "Review flag or unresolved issue remains; not a recording rejection",
+      "fixed": "Issue was present and repaired",
+      "not_applicable": "Check does not apply"
+    }
+  },
+  "issue_a06_hed_annotation": {
+    "Description": "A06: hed annotation",
+    "Levels": {
+      "absent": "Checked; issue not found",
+      "present": "Review flag or unresolved issue remains; not a recording rejection",
+      "fixed": "Issue was present and repaired",
+      "not_applicable": "Check does not apply"
+    }
+  },
+  "issue_a07_channel_metadata": {
+    "Description": "A07: channel metadata",
+    "Levels": {
+      "absent": "Checked; issue not found",
+      "present": "Review flag or unresolved issue remains; not a recording rejection",
+      "fixed": "Issue was present and repaired",
+      "not_applicable": "Check does not apply"
+    }
+  },
+  "issue_a08_acquisition_metadata": {
+    "Description": "A08: acquisition metadata",
+    "Levels": {
+      "absent": "Checked; issue not found",
+      "present": "Review flag or unresolved issue remains; not a recording rejection",
+      "fixed": "Issue was present and repaired",
+      "not_applicable": "Check does not apply"
+    }
+  },
+  "issue_a09_upstream_quality": {
+    "Description": "A09: upstream quality",
+    "Levels": {
+      "absent": "Checked; issue not found",
+      "present": "Review flag or unresolved issue remains; not a recording rejection",
+      "fixed": "Issue was present and repaired",
+      "not_applicable": "Check does not apply"
+    }
+  },
+  "issue_a10_task_overlap": {
+    "Description": "A10: mixed-task markers and availability of separate same-participant task/run files in this release. Availability requires a unique named BIDS counterpart containing its task start marker; amplitudes are compared exactly at matching start markers across every channel and sample of the shared interval, ending at the next task start or file end. Break markers alone do not flag overlap. A match does not establish complete task coverage or good signal quality",
+    "Levels": {
+      "absent": "Checked; no identified extra task/run start in this recording",
+      "present_counterpart_available_matches": "All extra task/run starts have separate counterparts; every compared shared interval matches exactly",
+      "present_counterpart_available_differs": "All extra task/run starts have separate counterparts; at least one shared interval differs at marker alignment",
+      "present_counterpart_available_unknown": "All extra task/run starts have separate counterparts, but at least one comparison is inconclusive and none establishes a difference",
+      "present_counterpart_missing": "Other task/run starts are present and at least one has no separate BIDS counterpart",
+      "unresolved": "Not inspected, uncertain task identity or ambiguous counterpart files"
+    },
+    "ComparisonLimitations": "Repeated start markers, different sample rates or channel order, or fewer than 32 shared samples leave amplitude comparison unknown. Differences are measured at marker alignment; no lag search, rereferencing or rescaling is attempted. When several tasks are embedded, a missing counterpart takes priority; otherwise any established difference takes priority over unknown comparisons"
+  },
+  "issue_a11_answer_alignment": {
+    "Description": "A11: answer alignment",
+    "Levels": {
+      "absent": "Checked; issue not found",
+      "present": "Review flag or unresolved issue remains; not a recording rejection",
+      "fixed": "Issue was present and repaired",
+      "not_applicable": "Check does not apply"
+    }
+  },
+  "issue_a12_behavior_disagreement": {
+    "Description": "A12: behavior disagreement",
+    "Levels": {
+      "absent": "Checked; issue not found",
+      "present": "Review flag or unresolved issue remains; not a recording rejection",
+      "fixed": "Issue was present and repaired",
+      "not_applicable": "Check does not apply"
+    }
+  },
+  "issue_a13_movie_markers": {
+    "Description": "A13: movie markers",
+    "Levels": {
+      "absent": "Checked; issue not found",
+      "present": "Review flag or unresolved issue remains; not a recording rejection",
+      "fixed": "Issue was present and repaired",
+      "not_applicable": "Check does not apply"
+    }
+  },
+  "issue_a14_event_extent": {
+    "Description": "A14: event extent",
+    "Levels": {
+      "absent": "Checked; issue not found",
+      "present": "Review flag or unresolved issue remains; not a recording rejection",
+      "fixed": "Issue was present and repaired",
+      "not_applicable": "Check does not apply"
+    }
+  },
+  "issue_a15_unidentified_channels": {
+    "Description": "A15: unidentified channels",
+    "Levels": {
+      "absent": "Checked; issue not found",
+      "present": "Review flag or unresolved issue remains; not a recording rejection",
+      "fixed": "Issue was present and repaired",
+      "not_applicable": "Check does not apply"
+    }
+  },
+  "et_status": {
+    "Description": "Eye-tracking augmentation outcome; not a signal-quality grade",
+    "Levels": {
+      "converted": "Aligned SMI files written",
+      "missing_et": "No uniquely matched complete SMI pair",
+      "ambiguous_et": "Multiple differing SMI candidates",
+      "duplicate_eeg": "Non-unique EEG identity",
+      "sync_failed": "Shared-event alignment failed",
+      "conversion_failed": "SMI conversion failed",
+      "not_applicable": "No EEG file in this release to augment"
+    }
+  },
+  "et_samples": {
+    "Description": "Matched Samples path relative to the repaired input collection"
+  },
+  "et_events": {
+    "Description": "Matched Events path relative to the repaired input collection"
+  },
+  "et_files": {
+    "Description": "Semicolon-separated added files, relative to this BIDS root"
+  },
+  "et_start_time": {
+    "Description": "First grid sample relative to EEG start",
+    "Units": "s"
+  },
+  "et_clock_scale": {
+    "Description": "EEG seconds per device-clock second"
+  },
+  "et_drift_ppm": {
+    "Description": "One million times (clock scale minus one)",
+    "Units": "ppm"
+  },
+  "et_anchors": {
+    "Description": "Number of matched timing anchors"
+  },
+  "et_sync_max_residual_s": {
+    "Description": "Maximum absolute alignment residual",
+    "Units": "s"
+  },
+  "et_sync_warnings": {
+    "Description": "Semicolon-separated alignment warning codes; none if absent"
+  },
+  "et_source_samples": {
+    "Description": "Observed source sample rows"
+  },
+  "et_output_samples": {
+    "Description": "Output grid rows, including gaps"
+  },
+  "et_inserted_samples": {
+    "Description": "Missing sampling slots inserted as n/a rows"
+  },
+  "et_sampling_frequency": {
+    "Description": "Sampling frequency after clock-scale correction",
+    "Units": "Hz"
+  },
+  "et_grid_rms_error_ms": {
+    "Description": "RMS difference between observed native timestamps and the exported grid, on the EEG clock; inserted rows are excluded",
+    "Units": "ms"
+  },
+  "et_grid_max_error_ms": {
+    "Description": "Maximum absolute difference between observed native timestamps and the exported grid, on the EEG clock",
+    "Units": "ms"
+  },
+  "et_grid_pass_5pct": {
+    "Description": "Every observed sample is within 5% of one exported grid period",
+    "Levels": {
+      "0": "Fails",
+      "1": "Passes"
+    }
+  },
+  "et_grid_pass_10pct": {
+    "Description": "Every observed sample is within 10% of one exported grid period",
+    "Levels": {
+      "0": "Fails",
+      "1": "Passes"
+    }
+  },
+  "et_left_zero_gaze_samples": {
+    "Description": "Source rows with jointly zero left gaze coordinates"
+  },
+  "et_right_zero_gaze_samples": {
+    "Description": "Source rows with jointly zero right gaze coordinates"
+  },
+  "beh_b01_status": {
+    "Description": "B01: selected source task settings and acquisition flags",
+    "Levels": {
+      "added": "Verified addition written",
+      "not_applicable": "Addition does not apply to this recording",
+      "missing_source": "No matching MATLAB behavioral export",
+      "ambiguous_source": "Differing source candidates",
+      "identity_conflict": "Source identity cannot be reconciled with the participant",
+      "invalid_source": "MATLAB export could not be decoded",
+      "unsupported_visit": "Session or repeated run needs review",
+      "no_fields": "No selected parameters present",
+      "invalid_parameters": "Selected parameters have an unsupported value or shape",
+      "target_mismatch": "Target directions/counts or block boundaries do not establish correspondence",
+      "timing_mismatch": "Matched target clocks exceed 20 ms maximum affine-fit residual",
+      "missing_order": "No unique matching movie-order export",
+      "movie_conflict": "Movie identity, order or visit fields disagree",
+      "metadata_conflict": "Existing metadata or column would be changed"
+    }
+  },
+  "beh_b02_status": {
+    "Description": "B02: planned waits before contrast targets",
+    "Levels": {
+      "added": "Verified addition written",
+      "not_applicable": "Addition does not apply to this recording",
+      "missing_source": "No matching MATLAB behavioral export",
+      "ambiguous_source": "Differing source candidates",
+      "identity_conflict": "Source identity cannot be reconciled with the participant",
+      "invalid_source": "MATLAB export could not be decoded",
+      "unsupported_visit": "Session or repeated run needs review",
+      "no_fields": "No selected parameters present",
+      "invalid_parameters": "Selected parameters have an unsupported value or shape",
+      "target_mismatch": "Target directions/counts or block boundaries do not establish correspondence",
+      "timing_mismatch": "Matched target clocks exceed 20 ms maximum affine-fit residual",
+      "missing_order": "No unique matching movie-order export",
+      "movie_conflict": "Movie identity, order or visit fields disagree",
+      "metadata_conflict": "Existing metadata or column would be changed"
+    }
+  },
+  "beh_b03_status": {
+    "Description": "B03: movie presentation index and source clip",
+    "Levels": {
+      "added": "Verified addition written",
+      "not_applicable": "Addition does not apply to this recording",
+      "missing_source": "No matching MATLAB behavioral export",
+      "ambiguous_source": "Differing source candidates",
+      "identity_conflict": "Source identity cannot be reconciled with the participant",
+      "invalid_source": "MATLAB export could not be decoded",
+      "unsupported_visit": "Session or repeated run needs review",
+      "no_fields": "No selected parameters present",
+      "invalid_parameters": "Selected parameters have an unsupported value or shape",
+      "target_mismatch": "Target directions/counts or block boundaries do not establish correspondence",
+      "timing_mismatch": "Matched target clocks exceed 20 ms maximum affine-fit residual",
+      "missing_order": "No unique matching movie-order export",
+      "movie_conflict": "Movie identity, order or visit fields disagree",
+      "metadata_conflict": "Existing metadata or column would be changed"
+    }
+  },
+  "beh_sources": {
+    "Description": "Semicolon-separated matched MATLAB paths relative to the input collection"
+  },
+  "beh_planned_iti_count": {
+    "Description": "Number of EEG target rows receiving a verified planned_iti value"
+  },
+  "beh_b02_max_residual_ms": {
+    "Description": "Maximum source/EEG target-time residual after an affine fit for B02",
+    "Units": "ms"
+  },
+  "repair_validation_state": {
+    "Description": "Before augmentation: Per-recording validator outcome when --validate is used: pass, warning, error, not_applicable, or n/a if not run. A pass is not an EEG quality grade"
+  },
+  "repair_validator_errors": {
+    "Description": "Before augmentation: Semicolon-separated CODE:SUBCODE tokens; none if checked and no recording-level errors; n/a if not checked"
+  },
+  "repair_validator_warnings": {
+    "Description": "Before augmentation: Semicolon-separated CODE:SUBCODE tokens; none if checked and no recording-level warnings; n/a if not checked"
+  },
+  "recommendation_method": {
+    "Description": "How the recommendation was assigned",
+    "Levels": {
+      "automatic_v2": "Ordered available/caution/unavailable rules documented under RecommendationRules",
+      "existing_review": "Explicit recommendation retained instead of an automatic replacement"
+    }
+  },
+  "recommendation_reasons": {
+    "Description": "Semicolon-separated controlled reason codes. For column-name codes, consult that column value and definition; multiple caveats are retained",
+    "Levels": {
+      "confirmed_unusable_signal": "One of the ten explicitly inspected A15 recording IDs",
+      "no_assessed_bids_recording": "No standalone EEG recording is present in the delivered collection; source-only or embedded data may still exist",
+      "unassessed_channel_identity": "Channel identity is unresolved and no reviewed unusability decision exists",
+      "validation_incomplete_or_failed": "EEG validation has not passed or completed; the existing recording requires caution rather than a claim of unusability",
+      "unresolved_task_identity": "The task-overlap assessment is unresolved",
+      "no_detected_obstacle": "No caveat among the screened conditions; not evidence that all possible problems were checked",
+      "existing_review": "An explicit recommendation was retained",
+      "issue_a06_hed_annotation": "Unresolved HED feedback association or timing interpretation",
+      "issue_a10_task_overlap": "Additional task/run content is present",
+      "issue_a11_answer_alignment": "Answer-to-response correspondence is uncertain",
+      "issue_a12_behavior_disagreement": "Behavioral values or planned blocks disagree with events",
+      "issue_a13_movie_markers": "Source/movie marker inconsistency",
+      "issue_a14_event_extent": "An event extends beyond the EEG interval",
+      "upstream_status": "Original status is not available",
+      "upstream_key_events_exist": "Original checks reported absent expected events",
+      "source_mapping": "Source correspondence is ambiguous",
+      "movie_anchor_count": "Expected movie markers do not each occur exactly once"
+    }
+  },
+  "RecommendationRules": {
+    "Priority": [
+      "Retain any explicitly supplied recommendation",
+      "unavailable for the ten inspected A15 recordings identified by release, participant and task",
+      "unavailable when no standalone EEG file is delivered for this row",
+      "caution for unresolved channel identity, incomplete/failed EEG validation or unresolved task identity",
+      "caution for present A06/A11/A12/A13/A14 issues, any established A10 overlap, non-available upstream status, missing expected events, ambiguous source mapping or abnormal movie marker counts",
+      "available otherwise: no obstacle identified by these checks"
+    ],
+    "IgnoredForEEGRecommendation": "Fixed metadata repairs, A08 missing acquisition facts, ordinary validator warnings, optional behavioral additions, and all ET availability/timing/missingness metrics",
+    "Limitations": "No new EEG amplitude analysis is performed. Available is conditional on the screening evidence. Unavailable can mean absent from the delivered release rather than irrecoverable; use recommendation_reasons and source fields to distinguish these cases. Caution requires analysis-specific interpretation."
+  },
+  "RatingSummary": {
+    "Rows": 31251,
+    "Participants": 3155,
+    "Recommendations": {
+      "available": 19824,
+      "caution": 6838,
+      "unavailable": 4589
+    },
+    "Methods": {
+      "automatic_v2": 31251
+    }
+  },
+  "SourceTables": [
+    {
+      "Path": "R1/code/recording_quality.tsv",
+      "SHA256": "d50f607293183cbb169b8ae0fff060a3cd998ce0bbe1c9ded6c7f39daa1b5ce0"
+    },
+    {
+      "Path": "R2/code/recording_quality.tsv",
+      "SHA256": "8bff047573a7cc76827f363d641343ca713da85b59b4872c03b4df2b89918cfb"
+    },
+    {
+      "Path": "R3/code/recording_quality.tsv",
+      "SHA256": "8f1eb784cee903e366cec526a726a2feef5a1ef244f9dd9440a46355f79e1858"
+    },
+    {
+      "Path": "R4/code/recording_quality.tsv",
+      "SHA256": "13d760f23a2666b28e757c5c020752777474693f8f0ed7f19007556dcf38bba0"
+    },
+    {
+      "Path": "R5/code/recording_quality.tsv",
+      "SHA256": "f79274ab42a3fdc86df86a1ecda92981dced4a1b754493a5d11f7a2da2564cef"
+    },
+    {
+      "Path": "R6/code/recording_quality.tsv",
+      "SHA256": "2f2c9082cb2a1459a2c0a6fad3dfed4fd345513cb196f1e038c98d15b139488e"
+    },
+    {
+      "Path": "R7/code/recording_quality.tsv",
+      "SHA256": "59db1a6845e387040947b81073b0b3b440da8189738ad0fbb00c05313a0f5274"
+    },
+    {
+      "Path": "R8/code/recording_quality.tsv",
+      "SHA256": "fa7b14acf8d0add61dcb0abbd7ad58b2ab57ea1e2ede1c8a3692642c4be95202"
+    },
+    {
+      "Path": "R9/code/recording_quality.tsv",
+      "SHA256": "eb8a94e67596fcd320e60603fd96bddd990bfd80c12a5e4e03af62ba03e5df20"
+    },
+    {
+      "Path": "R10/code/recording_quality.tsv",
+      "SHA256": "4f758a11449a2052d8522422db9821add94711d347d14e4fb4e4e75177da2446"
+    },
+    {
+      "Path": "R11/code/recording_quality.tsv",
+      "SHA256": "6001f084cda0ba9ab9cadbd387912335a779412894d1cdf9ffae5f25cda691e7"
+    }
+  ]
+}

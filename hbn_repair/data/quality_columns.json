@@ -1,0 +1,225 @@
+{
+  "RowDefinition": "Union of published EEG files and confirmed original S3 signal exports for participants in the selected releases. Task aliases are combined only when unambiguous; differing duplicate exports remain candidate rows.",
+  "MissingValues": {
+    "n/a": "Unknown or not assessed; recommendations are assigned separately from missing metric values"
+  },
+  "Scope": "Recommendation concerns EEG use for the named task after ordinary preprocessing. ET association and inclusion are reported separately; neither certifies ET synchronization or signal quality",
+  "hed_feedback_annotated": {
+    "Description": "Number of contrast targets with one consistent response and a recorded target-end marker; visual-feedback HED is attached to that end marker. No new event onset or outcome is invented"
+  },
+  "hed_feedback_unresolved": {
+    "Description": "Number of inspected contrast targets lacking an unambiguous feedback association; original response/outcome cells remain unchanged"
+  },
+  "hed_feedback_reasons": {
+    "Description": "Semicolon-separated controlled reasons for unresolved feedback annotations",
+    "Levels": {
+      "none": "No unresolved feedback association among inspected targets",
+      "missing_end": "Target has no end marker before another target, boundary, task start or file end",
+      "missing_response": "No response before the target-end marker",
+      "multiple_responses": "More than one response before the target-end marker",
+      "unknown_task_context": "A target label occurs without an established contrast-task segment",
+      "inconsistent_outcome_or_time": "Response outcome disagrees with target/response side, lacks a supported description, or the target/end timing is not increasing"
+    }
+  },
+  "hed_contrast_unusual_timing": {
+    "Description": "Number of target/end intervals outside 2.4 seconds ± 50 ms. The recording keeps point descriptions of target identity instead of fixed 1.6/0.8-second HED phases. Feedback on these trials is a point annotation without an asserted 400 ms duration"
+  },
+  "recording_id": {
+    "Description": "Stable row identifier; not necessarily a BIDS filename"
+  },
+  "participant_id": {
+    "Description": "Join key into participants.tsv"
+  },
+  "source_release": {
+    "Description": "Identifier of the original published EEG release, where known"
+  },
+  "release_number": {
+    "Description": "HBN release number"
+  },
+  "task": {
+    "Description": "Intended task whose usability is assessed in this row"
+  },
+  "run": {
+    "Description": "Known block/run number; n/a if absent or unresolved"
+  },
+  "upstream_status": {
+    "Description": "Original available/caution/unavailable entry, retained verbatim from participants.tsv when its recording identity is supported. Ambiguous unmatched source candidates use n/a. It is not translated into our recommendation",
+    "Levels": {
+      "available": "Original available status",
+      "caution": "Original caution status",
+      "unavailable": "Original unavailable status"
+    }
+  },
+  "in_s3": {
+    "Description": "A standalone original EEG export for this recording has been confirmed on S3. n/a if matching is ambiguous, or no match exists but the participant has unidentified source exports",
+    "Levels": {
+      "0": "Checked and absent",
+      "1": "Confirmed present"
+    }
+  },
+  "in_upstream_bids": {
+    "Description": "A standalone EEG file exists in the original published BIDS release",
+    "Levels": {
+      "0": "Checked and absent",
+      "1": "Confirmed present"
+    }
+  },
+  "in_bids": {
+    "Description": "A standalone EEG file exists in the delivered release described by this table",
+    "Levels": {
+      "0": "Checked and absent",
+      "1": "Confirmed present"
+    }
+  },
+  "et_associated": {
+    "Description": "A complete SMI samples/events pair is associated by supported task matching. 0 means no pair matched in the supplied ET tree; it does not establish absence of other original ET formats or certify synchronization",
+    "Levels": {
+      "0": "Checked and absent",
+      "1": "Confirmed present"
+    }
+  },
+  "et_in_bids": {
+    "Description": "Associated ET data are present in standard BIDS form in the delivered release; this is not a signal-quality verdict",
+    "Levels": {
+      "0": "Checked and absent",
+      "1": "Confirmed present"
+    }
+  },
+  "embedded_in": {
+    "Description": "recording_id of another row whose EEG file contains this task segment; n/a when no such relationship is established"
+  },
+  "bids_path": {
+    "Description": "Relative path from the delivered release root to the standalone EEG file; n/a if none"
+  },
+  "required_action": {
+    "Description": "Controlled action code; descriptions are defined once here instead of repeated as row prose",
+    "Levels": {
+      "none": "No special recovery or repair beyond ordinary task selection and preprocessing",
+      "extract_task": "Extract the verified task segment, preserve its time mapping and create the correctly named recording",
+      "convert_source": "Convert a verified usable original source into the delivered BIDS collection",
+      "exclude": "Do not use this recording for the assessed EEG task",
+      "review": "Review the unresolved evidence before relying on this recording"
+    }
+  },
+  "review_status": {
+    "Levels": {
+      "unreviewed": "No completed review for the stated analysis scope",
+      "partial": "Only some required checks have been completed",
+      "reviewed": "The specified human review is complete"
+    },
+    "Description": "Extent of human review; assigning an automatic recommendation does not change this field"
+  },
+  "recommendation": {
+    "Description": "EEG screening recommendation for the named task in the delivered release after ordinary preprocessing. Separate from the original upstream_status; see recommendation_method and recommendation_reasons",
+    "Levels": {
+      "available": "A delivered EEG recording has no relevant obstacle detected by the available checks; not a signal-quality certification",
+      "caution": "A delivered EEG recording has a known caveat or incomplete assessment requiring consideration before use",
+      "unavailable": "No standalone EEG recording is delivered for this row, or this specific recording is confirmed unusable. Reasons distinguish these cases; missing data are not declared irrecoverable"
+    }
+  },
+  "ReviewProtocol": "Automatic EEG screening assigns provisional recommendations using RecommendationRules; --reviews overrides them. Human review_status is preserved. ET availability, timing and missingness must be evaluated separately for joint EEG/ET analyses.",
+  "source_task": {
+    "Description": "Original S3 export name; n/a when unmatched"
+  },
+  "source_mapping": {
+    "Description": "task_alias: mapped by known task aliases or movie markers; unresolved: no supported task identity; ambiguous: multiple differing source/BIDS candidates"
+  },
+  "source_mat": {
+    "Description": "Original S3 MATLAB export URL, if present"
+  },
+  "source_csv": {
+    "Description": "Original S3 signal CSV URL, if present"
+  },
+  "mixed_task_starts": {
+    "Description": "1: more than one distinct recognized task/block start marker; 0: checked and absent"
+  },
+  "internal_boundary": {
+    "Description": "1: boundary or break cnt strictly within the sample interval; descriptive only, not a quality issue or evidence of task overlap"
+  },
+  "movie_anchor_count": {
+    "Description": "1: expected movie start or stop does not occur exactly once"
+  },
+  "unknown_channel_identity": {
+    "Description": "1: missing .set channel labels or the unresolved six-channel HBN layout"
+  },
+  "acquisition_fields_missing": {
+    "Description": "Semicolon-separated missing acquisition field names; n/a if none of the screened fields is missing"
+  },
+  "eeg_channel_count_added": {
+    "Description": "1: EEGChannelCount was filled from verified channel types and .set count"
+  },
+  "issue_availability": {
+    "Description": "present: available status without a BIDS file, or unavailable status despite a BIDS file; absent: neither condition"
+  },
+  "upstream_data_pnts": {
+    "Description": "Original quality-table sample count, without recalculation"
+  },
+  "upstream_event_cnt": {
+    "Description": "Original quality-table event count, without recalculation"
+  },
+  "upstream_key_events_exist": {
+    "Description": "Original quality-table key_events_exist value"
+  },
+  "upstream_quality_checks": {
+    "Description": "Original quality-table quality_checks value, without reinterpretation"
+  },
+  "source_aliases": {
+    "Description": "Semicolon-separated original export names collapsed when task identity, source signal size and S3 ETag agree"
+  },
+  "task_start_codes": {
+    "Description": "Semicolon-separated distinct task/block start codes; presence does not certify complete recoverable task segments"
+  },
+  "initial_offset_unpaired": {
+    "Description": "1: the first event is an offset without a preceding onset in this recording. Its label and timing are retained; hed_annotation represents it as a point event instead of an unsupported temporal interval"
+  },
+  "validation_state": {
+    "Description": "Per-recording validator outcome when --validate is used: pass, warning, error, not_applicable, or n/a if not run. A pass is not an EEG usability certification"
+  },
+  "validator_errors": {
+    "Description": "Semicolon-separated CODE:SUBCODE tokens; none if checked and no recording-level errors; n/a if not checked"
+  },
+  "validator_warnings": {
+    "Description": "Semicolon-separated CODE:SUBCODE tokens; none if checked and no recording-level warnings; n/a if not checked"
+  },
+  "recommendation_method": {
+    "Description": "How the recommendation was assigned",
+    "Levels": {
+      "automatic_v2": "Ordered available/caution/unavailable rules documented under RecommendationRules",
+      "existing_review": "Explicit recommendation retained instead of an automatic replacement"
+    }
+  },
+  "recommendation_reasons": {
+    "Description": "Semicolon-separated controlled reason codes. For column-name codes, consult that column value and definition; multiple caveats are retained",
+    "Levels": {
+      "confirmed_unusable_signal": "One of the ten explicitly inspected A15 recording IDs",
+      "no_assessed_bids_recording": "No standalone EEG recording is present in the delivered collection; source-only or embedded data may still exist",
+      "unassessed_channel_identity": "Channel identity is unresolved and no reviewed unusability decision exists",
+      "validation_incomplete_or_failed": "EEG validation has not passed or completed; the existing recording requires caution rather than a claim of unusability",
+      "unresolved_task_identity": "The task-overlap assessment is unresolved",
+      "no_detected_obstacle": "No caveat among the screened conditions; not evidence that all possible problems were checked",
+      "existing_review": "An explicit recommendation was retained",
+      "issue_a06_hed_annotation": "Unresolved HED feedback association or timing interpretation",
+      "issue_a10_task_overlap": "Additional task/run content is present",
+      "issue_a11_answer_alignment": "Answer-to-response correspondence is uncertain",
+      "issue_a12_behavior_disagreement": "Behavioral values or planned blocks disagree with events",
+      "issue_a13_movie_markers": "Source/movie marker inconsistency",
+      "issue_a14_event_extent": "An event extends beyond the EEG interval",
+      "upstream_status": "Original status is not available",
+      "upstream_key_events_exist": "Original checks reported absent expected events",
+      "source_mapping": "Source correspondence is ambiguous",
+      "movie_anchor_count": "Expected movie markers do not each occur exactly once"
+    }
+  },
+  "RecommendationRules": {
+    "Priority": [
+      "Retain any explicitly supplied recommendation",
+      "unavailable for the ten inspected A15 recordings identified by release, participant and task",
+      "unavailable when no standalone EEG file is delivered for this row",
+      "caution for unresolved channel identity, incomplete/failed EEG validation or unresolved task identity",
+      "caution for present A06/A11/A12/A13/A14 issues, any established A10 overlap, non-available upstream status, missing expected events, ambiguous source mapping or abnormal movie marker counts",
+      "available otherwise: no obstacle identified by these checks"
+    ],
+    "IgnoredForEEGRecommendation": "Fixed metadata repairs, A08 missing acquisition facts, ordinary validator warnings, optional behavioral additions, and all ET availability/timing/missingness metrics",
+    "Limitations": "No new EEG amplitude analysis is performed. Available is conditional on the screening evidence. Unavailable can mean absent from the delivered release rather than irrecoverable; use recommendation_reasons and source fields to distinguish these cases. Caution requires analysis-specific interpretation."
+  }
+}

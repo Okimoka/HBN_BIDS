@@ -1,0 +1,71 @@
+{
+  "feedback": {
+    "Description": "The visual feedback the users recived to see if their resposne correct or not.",
+    "Levels": {
+      "smiley_face": "A green smiley face would show at the middle of the screen for 400 ms",
+      "sad_face": "A red sad face would show at the middle of the screen for 400 ms",
+      "non_target": "Source export encodes no target-trial feedback value on this row"
+    }
+  },
+  "background": {
+    "Description": "Whether the background is present",
+    "Levels": {
+      "0": "Background is not present",
+      "1": "Background is present, sinusoidal luminance-modulated gratings with a spatial frequency of 1 cycle per degree in all conditions"
+    },
+    "HED": {
+      "0": "(Visual-presentation, (Background-view, Gray))",
+      "1": "(Visual-presentation, (Background-view, (Pattern, Vertically-oriented, Label/sinusoidal-luminance-modulated-gratings-with-a-spatial-frequency-of-1-cycle-per-degree-in-all-conditions)))"
+    }
+  },
+  "foreground_contrast": {
+    "Description": "The foreground contrast",
+    "Levels": {
+      "0": "No contrast",
+      "1": "Full contrast",
+      "0.3": "Encoded foreground contrast 0.3",
+      "0.6": "Encoded foreground contrast 0.6"
+    },
+    "HED": {
+      "0": "(Luminance-contrast, Fraction/0)",
+      "0.3": "(Luminance-contrast, Fraction/0.3)",
+      "0.6": "(Luminance-contrast, Fraction/0.6)",
+      "1": "(Luminance-contrast, Fraction/1)"
+    }
+  },
+  "stimulus_cond": {
+    "Description": "The condition of the stimulus",
+    "Levels": {
+      "1": "Stimulus condition 1: peripheral foreground disks with parallel, spatially opposite-phase background",
+      "2": "Stimulus condition 2: peripheral foreground disks with parallel, spatially in-phase background",
+      "3": "Stimulus condition 3: peripheral foreground disks with orthogonal background"
+    },
+    "HED": {
+      "1": "(Spatial-relation, Vertically-oriented, Label/peripheral-foreground-disks-with-parallel-spatially-opposite-phase-background)",
+      "2": "(Spatial-relation, Vertically-oriented, Label/peripheral-foreground-disks-with-parallel-spatially-in-phase-background)",
+      "3": "(Spatial-relation, Horizontally-oriented, Label/peripheral-foreground-disks-with-orthogonal-background)"
+    }
+  },
+  "user_answer": {
+    "Description": "content of user's response",
+    "Levels": {
+      "0": "False, symbol was not found",
+      "1": "True, symbol was found"
+    },
+    "HED": {
+      "0": "(Label/response-value, False)",
+      "1": "(Label/response-value, True)"
+    }
+  },
+  "correct_answer": {
+    "Description": "the correct response",
+    "Levels": {
+      "0": "Symbol was not present in the search query",
+      "1": "Symbol was present in the search query"
+    },
+    "HED": {
+      "0": "(Label/correct-value, False)",
+      "1": "(Label/correct-value, True)"
+    }
+  }
+}

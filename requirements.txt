@@ -1,0 +1,5 @@
+-r download_dataset/requirements.txt
+-r smi2bids/requirements.txt
+-r hbn_repair/requirements.txt
+-r hbn_augment/requirements.txt
+-r hbn_bundle/requirements.txt
